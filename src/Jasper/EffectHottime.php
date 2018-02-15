@@ -29,7 +29,7 @@ if(!Utils::getURL("https://raw.githubusercontent.com/yonggyu/EffectHottime/maste
  
    if(!is_numeric($args[0]) or !is_numeric($args[1]) or !is_numeric($args[2]) or !isset($args[3])){
 $sender->sendMessage("§f[ §b버프핫타임 ] /버프핫타임 <이펙트코드> <초> <강도> <이펙트이름>");
-return;
+return true;
 }else{
 foreach( $this->getServer()->getOnlinePlayers() as $player ) {
 $player->addEffect (Effect::getEffect ( $args[0] )->setDuration ( $args[1]*20 )->setAmplifier($args[2]));
@@ -43,7 +43,7 @@ return true;
 if ($cmd === "머니핫타임") {
 if(!is_numeric($args[0])){
 $sender->sendMessage("§f[ §b버프핫타임§f ] /머니핫타임 <돈>");
-return;
+return true;
     } else {
 foreach( $this->getServer()->getOnlinePlayers() as $player ) {
 $this->getServer()->broadcastMessage($tag.$sender->getName()."님이 핫타임으로 ".$args[0]."원을 주었습니다.");
@@ -57,9 +57,8 @@ return true;
 if($cmd === "칭호핫타임"){
 	if(!isset($args[0])){
 		$sender->sendMessage($tag."§f/칭호핫타임 <칭호명>");
-		return;
-	}
-	else {
+		return true;
+	}else {
 		foreach($this->getServer()->getOnlinePlayers() as $player){
 			$player->sendMessage($tag.$sender->getName()."님이 핫타임으로 §6[ ".$args[0]." §6]§f 칭호를 주었습니다. 칭호를 확인하세요!");
 $prefix = $args[0];
@@ -69,6 +68,20 @@ $rank = RankProvider::getInstance()->getRank($player);
 		}
 		return true;
 	}
+ if ($cmd === "아이템핫타임") {
+ if(!is_numeric($args[0])){
+$sender->sendMessage("§l§f[ §a아이템핫타임§f ] /아이템핫타임 <갯수>");
+return true;
+    } else {
+	 foreach ($this->getServer()->getOnlinePlayers() as $player){
+	$hand = $sender->getInventory()->getItemInHand();
+        $name = $hand->getName();
+	$name1 = explode("x", $name);
+	$id = $hand->getId();
+	$player->getInventory()->addItem(Item::get($id,0,$args[1]));
+	$this->getServer()->broadcastMessage("§l§f[ §a아이템핫타임§f ] 아이템 : ".$name1[0], "갯수 : ".$args[1]);
+}
+return true;
 }
 }
 }
